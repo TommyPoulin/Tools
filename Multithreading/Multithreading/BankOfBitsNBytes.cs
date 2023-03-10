@@ -47,6 +47,7 @@ namespace BankOfBitsAndBytes
                 {
                     Console.Out.WriteLine("Successful password: " + CharArrayToString(password));
                     moneyAmt -= 500;
+                    ResetPassword();
                     return 500;
                 }
                 else
