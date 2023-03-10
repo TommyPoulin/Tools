@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,12 +15,7 @@ public static class ExtensionFuncs              //static required
     
     
     
-    Make an extension function that mimics how .Contains works  
-    Make an extension function that runs a predicate on each element and returns if it is true for all elements
-    Make an extension function that runs a delegate on a collection of type T, and returns a collection of type G
-        Examples:
-            Vector3[] velocitiesOfEachRb = arrayOfRigidbodiesIHave.CollectionFrom((rb)=>{ return rb.velocity;});
-            Vector3[] positionsOfGameObjects = arrayOfGameObjects.CollectionFrom((go)=>{ return go.position;});
+    
     */
 
     /*
@@ -37,7 +33,7 @@ public static class ExtensionFuncs              //static required
 
     //Make an extension function on a Vector2 which returns a random value between x & y
     public static float RandomBetweenXAndY(this Vector2 v2) {
-        return Random.Range(v2.x, v2.y);
+        return UnityEngine.Random.Range(v2.x, v2.y);
     }
 
     //Make an extension function of rigidbody that given a float arguement, clamps speed at that threshold
@@ -73,4 +69,19 @@ public static class ExtensionFuncs              //static required
                 return true;
         return false;
     }
+
+    //Make an extension function that runs a predicate on each element and returns if it is true for all elements
+    public static void AreElementsTrue<T, R>(this T collection, R type) where T : ICollection {
+        Predicate<R> isElemTrue = IsElementTrue;
+        foreach (R element in collection)
+            Debug.Log("Predicate Exercise: " + isElemTrue(element));
+    }
+    public static bool IsElementTrue<T>(T element) {
+        return element.Equals(true);
+    }
+
+    //Make an extension function that runs a delegate on a collection of type T, and returns a collection of type G
+    //    Examples:
+    //        Vector3[] velocitiesOfEachRb = arrayOfRigidbodiesIHave.CollectionFrom((rb) => { return rb.velocity; });
+    //        Vector3[] positionsOfGameObjects = arrayOfGameObjects.CollectionFrom((go) => { return go.position; });
 }

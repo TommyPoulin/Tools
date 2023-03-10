@@ -23,7 +23,22 @@ public class TestScript : MonoBehaviour
 
         int[] arr3 = { 1, 4, 6, 3, 2 };
         Debug.Log(arr3.IsContaining(4));
-        string[] arr4 = { "aaa", "bbb", "ccc" };
-        Debug.Log(arr4.IsContaining("bbb"));
+        List<string> list = new List<string>();
+        list.Add("aaa");
+        list.Add("bbb");
+        list.Add("ccc");
+        Debug.Log(list.IsContaining("ddd"));
+
+        int[] arr4 = { 1, 4, 6, 0, 2 };
+        arr4.AreElementsTrue(arr4[0]);
+        List<bool> list2 = new List<bool>();
+        list2.Add(true);
+        list2.Add(false);
+        list2.Add(true);
+        list2.Add(true);
+        list2.Add(false);
+        list2.AreElementsTrue(list2[0]);
+
+
     }
 }
