@@ -2,22 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BankOfBitsAndBytes
 {
     class Program
     {
-        static readonly int passwordLength = 2; //Can you solve up to 6?
+        static readonly int passwordLength = 6; //Can you solve up to 6?
         static int startingLetter = 0;
         static BankOfBitsNBytes bbb = new BankOfBitsNBytes(passwordLength);
 
+        static bool noMoreMoney = false;
+
         static void Main(string[] args) {
-            TryPasswords();
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+            for (int i = 0; i < 6; i++)
+            {                
+                ThreadStart ts = new ThreadStart(() => { TryPasswords(startingLetter); });
+                Thread t = new Thread(ts);
+                t.Start();
+                startingLetter += 4;
+            }
+
+            while (!noMoreMoney) {
+
+            }
+            sw.Stop();
+            Console.WriteLine(sw.Elapsed);
+                       
             Console.ReadLine();
         }
 
-        static void TryPasswords() {
+        static void TryPasswords(int startingLetter) {
             int[] charPos = new int[passwordLength];
             for (int i = 0; i < passwordLength; i++) {
                 if (i == 0)
@@ -25,18 +43,19 @@ namespace BankOfBitsAndBytes
                 else
                     charPos[i] = 0;
             }
-            //startingLetter += 4;
 
             char[] pass = new char[passwordLength];
 
             int robbedAmount = 0;
-            while (robbedAmount != -1) {
+            while (robbedAmount != -1 && !noMoreMoney) {
                 for (int i = 0; i < passwordLength; i++)
                     pass[i] = BankOfBitsNBytes.acceptablePasswordChars[charPos[i]];
-                robbedAmount = bbb.WithdrawMoney(pass);
-                OutputCharArray(pass);
+                if (!noMoreMoney)
+                    robbedAmount = bbb.WithdrawMoney(pass);
+                //OutputCharArray(pass);
                 charPos = NextPassword(charPos);
             }
+            noMoreMoney = true;
         }
 
         static Random r = new Random(); //To prevent it being re-created every frame based on sys clock (Which would produce non-random number)
