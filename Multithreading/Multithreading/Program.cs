@@ -19,8 +19,9 @@ namespace BankOfBitsAndBytes
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
             for (int i = 0; i < 6; i++)
-            {                
-                ThreadStart ts = new ThreadStart(() => { TryPasswords(startingLetter); });
+            {
+                int _startingLetter = startingLetter;
+                ThreadStart ts = new ThreadStart(() => { TryPasswords(_startingLetter); });
                 Thread t = new Thread(ts);
                 t.Start();
                 startingLetter += 4;
